@@ -34,11 +34,11 @@ export default {
 </script>
 
 <template>
-  <div class="border rounded px-1 mb-1 bg-dark">
+  <div class="border rounded px-1 mb-1 bg-dark prediction-item">
     <div class="position-relative">
       <button class="btn btn-sm btn-danger position-absolute top-0 end-0 mt-1 p-0" @click="$emit('remove')">Remove</button>
     </div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center py-0">
       <div class="py-0 px-1 my-0 flex-fill w-100 align-items-center lh-sm" v-html="label">
       </div>
       <!-- Likelihood Slider -->
@@ -53,6 +53,10 @@ export default {
 </template>
 
 <style scoped>
+.prediction-item {
+  font-size: 14px;
+}
+
 .btn-close {
   background: none;
   border: none;

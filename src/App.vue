@@ -14,3 +14,10 @@ export default {
     <AccumulatorBuilder />
   </div>
 </template>
+
+<style>
+html {
+  font-size: 14px;
+}
+
+</style>

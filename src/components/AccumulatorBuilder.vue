@@ -240,7 +240,7 @@ export default {
       </div>
 
       <!-- Right Content Area -->
-      <div class="col-md-4 d-flex flex-column" style="max-height: 85vh;">
+      <div class="col-md-4 d-flex flex-column" style="max-height: 87dvh;">
         <h5 class="pt-1 pb-1 px-0 border-bottom">Accumulator Builder</h5>
         <div class="text-center">
           <p class="p-0 mt-0 mb-2">Selections: {{ totalPredictions }}</p>
@@ -266,7 +266,7 @@ export default {
         </div>
 
         <!-- Sort Button (Sticky) -->
-        <div class="mt-3">
+        <div class="mt-1">
           <button class="btn btn-info w-100" 
             :class="predictions.length > 0 ? 'border-light' : ''" 
             :disabled="predictions.length === 0"
