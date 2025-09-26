@@ -2,8 +2,10 @@ An application that displays football fixtures by top leagues, within the next 3
 
 The user can give a 'likelihood' percentage for each prediction, and then sort those predictions by their given likelihood, allowing simplification of accumulator permutations.
 
-<img width="1723" height="883" alt="Image" src="https://github.com/user-attachments/assets/63536fe3-89b0-4f28-a217-ced22005d94c" />
+The 'Copy Selections' button allows you to copy your predictions to the clipboard.
+
+<img width="1919" height="900" alt="Image" src="https://github.com/user-attachments/assets/3677b215-54d9-4156-980f-fa03fe6a8b59" />
 
 After sorting by likelihood:
 
-<img width="1723" height="885" alt="Image" src="https://github.com/user-attachments/assets/214e6e3c-73c1-49d3-b55c-1ecde5b8142f" />
+<img width="1920" height="900" alt="Image" src="https://github.com/user-attachments/assets/ddca17f3-e5bd-44ce-bdf7-a06494ce39f5" />
