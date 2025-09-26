@@ -97,7 +97,7 @@ export default {
             ? `<strong>Draw</strong><br><small>(${fixture.home} v ${fixture.away})</small>`
             : `<strong>${fixture[result.toLowerCase()]}</strong><br><small>(${fixture.home} v ${fixture.away})</small>`;
 
-        this.predictions.push({ label, confidence: 50 });
+        this.predictions.push({ label, confidence: 50, league: fixture.league });
       }
     },
     removePrediction(index) {
@@ -120,12 +120,69 @@ export default {
     sortPredictions() {
       this.predictions.sort((a, b) => b.confidence - a.confidence);
     },
+    copyToClipboard() {
+      // preferred league ordering in copied text
+      let leagueOrder = [
+        "Premier League",
+        "Championship",
+        "La Liga",
+        "Bundesliga",
+        "Serie A",
+        "Ligue 1",
+        "Eredivisie",
+        "Primeira Liga",
+        "Scottish Prem",
+        "Süper Lig" 
+      ]
+      // group predictions by league
+      const grouped = this.predictions.reduce((acc, item) => {
+        if (!acc[item.league]) {
+          acc[item.league] = [];
+        }
+        acc[item.league].push(item);
+        return acc;
+      }, {});
+      // sort by likelihood within each league
+      for (const league in grouped) {
+        grouped[league].sort((a,b) => b.confidence - a.confidence);
+      }
+      console.log(this.predictions)
+      // build output copy text
+      let clipboardData = leagueOrder.map(league => {
+        // skip leagues with no data
+        if (!grouped[league]) {
+          return null;
+        }
+        const lines = grouped[league].map(item => {
+          // replace line breaks with " "
+          const htmlLine = item.label.replace(/<br\s*\/?>/gi, " ");
+          const label = this.convertHtmlToText(htmlLine);
+          return `${item.confidence}%: ${label}`;
+        });
+        return `[${league}]:\n${lines.join("\n")}`;
+      })
+      .filter(Boolean) // remove nulls
+      .join("\n\n");
+
+      navigator.clipboard.writeText(clipboardData)
+        .then(() => {
+          console.log("Selections copied to clipboard!");
+        })
+        .catch(err => {
+          console.error("Failed to copy text: ", err);
+        });
+    },
     isPastKickoff(fixture) {
       const now = new Date();
       const kickoff = new Date(`${fixture.date.toISOString().split('T')[0]}T${fixture.kickoff}`);
       return kickoff < now;
-    }
-  },
+    },
+    convertHtmlToText(html) {
+      const div = document.createElement("div");
+      div.innerHTML = html; 
+      return div.textContent || "";
+    }    
+  }
 };
 </script>
 
@@ -266,12 +323,18 @@ export default {
         </div>
 
         <!-- Sort Button (Sticky) -->
-        <div class="mt-1">
-          <button class="btn btn-info w-100" 
+        <div class="mt-1 d-flex">
+          <button class="btn btn-info w-75 mx-1 py-1 px-0" 
             :class="predictions.length > 0 ? 'border-light' : ''" 
             :disabled="predictions.length === 0"
             @click="sortPredictions">
-            Sort Accumulator
+            Sort By Likelihood
+          </button>
+          <button class="btn btn-dark w-25 mx-1 py-1 px-0"
+            :class="predictions.length > 0 ? 'border-light' : ''" 
+            :disabled="predictions.length === 0"
+            @click="copyToClipboard">
+            Copy Selections
           </button>
         </div>
       </div>
@@ -300,7 +363,7 @@ thead.fixtures-table-header th {
 .prediction-enter-from,
 .prediction-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateX(-20px);
 }
 
 .league-flag {

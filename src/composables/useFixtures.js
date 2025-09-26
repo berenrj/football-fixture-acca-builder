@@ -15,13 +15,14 @@ const leagueFiles = {
     "Süper Lig": "tr.1.json"
 }
 
-function normaliseFixtureData(data) {
+function normaliseFixtureData(data, leagueName) {
     const fixtures = [];
-
     const matches = data.matches || [];
+
     matches.forEach(m => {
         const dateObj = m.time ? new Date(`${m.date}T${m.time}`) : new Date(m.date);
         fixtures.push({
+            league: leagueName,
             date: dateObj,
             kickoff: m.time || "TBD",
             home: m.team1,
@@ -46,13 +47,14 @@ export function useFixtures() {
         const results = [];
 
         for (const [name, file] of Object.entries(leagueFiles)) {
+
             const url = `${baseUrl}${file}?t=${Date.now()}`;
 
             try {
                 const res = await fetch(url);
                 if (!res.ok) continue;
                 const data = await res.json();
-                const fixtures = normaliseFixtureData(data);
+                const fixtures = normaliseFixtureData(data, name);
 
                 results.push({ name, fixtures });
 
