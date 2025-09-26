@@ -11,6 +11,9 @@ export default defineConfig({
     vueDevTools(),
   ],
   base: '/football-fixture-acca-builder/',
+  build: {
+    outDir: 'docs'
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
